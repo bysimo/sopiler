@@ -23,12 +23,12 @@
 
     <div class="mt-5 container w-75">
       <div class="input-group  mb-5 ">
-        <input type="text" class="form-control shadow" placeholder="https://www.youtube.com/watch?v=" id="url"
+        <input type="text" class="form-control shadow" placeholder="https://www.youtube.com/watch?v=" id="url" oninput="watchInputChanges(this.value)"
           name="url">
         <button class="btn btn-outline-primary shadow" type="button" id="eksekusi" value="submit"
           onclick="embedVideo()">Submit</button>
       </div>
-      <div class="mb-3 mt-3 p-2 container text-center">
+      <div class="mb-3 mt-3 p-2 container text-center" id="text-area" style="display: none;">
         <label for="code" class="form-label mb-3">Get your embed code below !</label>
         <textarea class="form-control shadow" id="hasil" rows="3"></textarea>
         <button class="btn btn-outline-dark mt-4 shadow" onclick="myFunction()">Copy text</button>
