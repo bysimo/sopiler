@@ -31,7 +31,7 @@ function embedVideo(){
 
 function myFunction() {
   /* Get the text field */
-  var copyText = document.getElementById("myInput");
+  var copyText = document.getElementById("hasil");
 
   /* Select the text field */
   copyText.select();
