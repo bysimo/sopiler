@@ -53,8 +53,8 @@ const Home = () => {
     alert("Copied the text: " + copyText.value);
   }
 
-  function watchInputChanges(value) {
-    if (!value) {
+  function watchInputChanges() {
+    if (!document.getElementById("url").value) {
       const div = document.getElementById("text-area");
       div.style.display = "none";
     }
@@ -96,7 +96,7 @@ const Home = () => {
               className="form-control shadow"
               placeholder="https://www.youtube.com/watch?v="
               id="url"
-              onInput={() => watchInputChanges(this.value)}
+              onInput={() => watchInputChanges()}
               name="url"
             />
             <button
@@ -120,7 +120,7 @@ const Home = () => {
             <textarea className="form-control shadow" id="hasil" rows="3" />
             <button
               className="btn btn-outline-dark mt-4 shadow"
-              onClick={() => embedVideo()}
+              onClick={() => myFunction()}
             >
               Copy text
             </button>
