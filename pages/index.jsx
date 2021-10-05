@@ -1,7 +1,10 @@
 import Head from "next/head";
 
+var linkVaild = true;
+
 const Home = () => {
   function convert_url() {
+    linkVaild = true
     var url = document.getElementById("url").value;
     if (url != null) {
       var regxwww = /^(?:http|https):\/\/[a-zA-Z0-9=+_./-]+[.]+/;
@@ -19,6 +22,7 @@ const Home = () => {
         }
         return url;
       } else {
+        linkVaild = false;
         alert("Incorrect URL address");
       }
     }
@@ -33,9 +37,15 @@ const Home = () => {
   function embedVideo() {
     var idvideo = convert_url();
     var mulaiEmbed = formatEmbed(idvideo);
-    document.getElementById("hasil").value = mulaiEmbed;
     const div = document.getElementById("text-area");
-    div.style.display = "block";
+    if (linkVaild) {
+      document.getElementById("hasil").value = mulaiEmbed;
+      div.style.display = "block";
+    }
+    else {
+      document.getElementById("hasil").value = '';
+      div.style.display = "none";
+    }
   }
 
   function myFunction() {
