@@ -35,9 +35,9 @@ const Home = () => {
   }
   function embedVideo() {
     var idvideo = convert_url();
-    var mulaiEmbed = formatEmbed(idvideo);
     const div = document.getElementById("text-area");
     if (linkValid) {
+      var mulaiEmbed = formatEmbed(idvideo);
       document.getElementById("hasil").value = mulaiEmbed;
       div.style.display = "block";
     }
