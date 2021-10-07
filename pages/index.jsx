@@ -1,10 +1,10 @@
 import Head from "next/head";
 
-var linkVaild = true;
+var linkValid;
 
 const Home = () => {
   function convert_url() {
-    linkVaild = true
+    linkValid = false;
     var url = document.getElementById("url").value;
     if (url != null) {
       var regxwww = /^(?:http|https):\/\/[a-zA-Z0-9=+_./-]+[.]+/;
@@ -14,16 +14,15 @@ const Home = () => {
         var hasilrgx = url.match(regx_yutub);
         if (hasilrgx) {
           url = hasilrgx[2];
+          linkValid = true
         }
         regx_yutub = /^(?:http|https):\/\/youtu\.be\/([a-zA-Z0-9]{1,15})/;
         hasilrgx = url.match(regx_yutub);
         if (hasilrgx) {
           url = hasilrgx[1];
+          linkValid = true
         }
         return url;
-      } else {
-        linkVaild = false;
-        alert("Incorrect URL address");
       }
     }
   }
@@ -38,11 +37,12 @@ const Home = () => {
     var idvideo = convert_url();
     var mulaiEmbed = formatEmbed(idvideo);
     const div = document.getElementById("text-area");
-    if (linkVaild) {
+    if (linkValid) {
       document.getElementById("hasil").value = mulaiEmbed;
       div.style.display = "block";
     }
     else {
+      alert("Incorrect URL address");
       document.getElementById("hasil").value = '';
       div.style.display = "none";
     }
