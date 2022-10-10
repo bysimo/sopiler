@@ -30,7 +30,7 @@ const Home = () => {
     var embed =
       '<iframe src="https://www.youtube.com/embed/' +
       str +
-      '" width="480" height="360" title="Embedded Media"></iframe>';
+      '" style="width:100%; aspect-ratio:16/9;" title="Embedded Media"></iframe>';
     return embed;
   }
   function embedVideo() {
