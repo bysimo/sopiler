@@ -1,36 +1,29 @@
 import Head from "next/head";
-
-var linkValid;
-
+import { useState } from "react";
+import Parser from "html-react-parser";
 const Home = () => {
+  const [embedIframe, setEmbedIframe] = useState("");
+  var linkValid;
   function convert_url() {
     linkValid = false;
     var url = document.getElementById("url").value;
     if (url != null) {
-      var regxwww = /^(?:http|https):\/\/[a-zA-Z0-9=+_./-]+[.]+/;
-      if (url.match(regxwww)) {
-        var regx_yutub =
-          /^((?:http|https):\/\/(?:www|m)\.youtube\.com)\/watch\?v\=([a-zA-Z0-9]{1,15})/;
-        var hasilrgx = url.match(regx_yutub);
-        if (hasilrgx) {
-          url = hasilrgx[2];
-          linkValid = true
-        }
-        regx_yutub = /^(?:http|https):\/\/youtu\.be\/([a-zA-Z0-9]{1,15})/;
-        hasilrgx = url.match(regx_yutub);
-        if (hasilrgx) {
-          url = hasilrgx[1];
-          linkValid = true
-        }
-        return url;
+      if (url.includes("youtu.be")) {
+        var video_id = url.split("youtu.be/")[1];
+        linkValid = true;
+        return video_id;
       }
+      var video_id = url.split("v=")[1];
+      var ampersandPosition = video_id.indexOf("&");
+      if (ampersandPosition != -1) {
+        video_id = video_id.substring(0, ampersandPosition);
+      }
+      linkValid = true;
+      return video_id;
     }
   }
   function formatEmbed(str) {
-    var embed =
-      '<iframe src="https://www.youtube.com/embed/' +
-      str +
-      '" style="width:100%; aspect-ratio:16/9;" title="Embedded Media"></iframe>';
+    var embed = `<iframe src="https://www.youtube-nocookie.com/embed/${str}" style="width:100%; aspect-ratio:16/9;" title="Embedded Media" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     return embed;
   }
   function embedVideo() {
@@ -40,10 +33,10 @@ const Home = () => {
       var mulaiEmbed = formatEmbed(idvideo);
       document.getElementById("hasil").value = mulaiEmbed;
       div.style.display = "block";
-    }
-    else {
+      setEmbedIframe(mulaiEmbed);
+    } else {
       alert("Incorrect URL address");
-      document.getElementById("hasil").value = '';
+      document.getElementById("hasil").value = "";
       div.style.display = "none";
     }
   }
@@ -119,6 +112,10 @@ const Home = () => {
               Submit
             </button>
           </div>
+          <div>
+            <div className="content">{Parser(embedIframe)}</div>
+          </div>
+
           <div
             className="mb-3 mt-3 p-2 container text-center"
             id="text-area"
