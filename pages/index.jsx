@@ -1,8 +1,11 @@
 import Head from "next/head";
-
+import { useState } from "react";
+import Parser from "html-react-parser";
 var linkValid;
 
 const Home = () => {
+  const [embedIframe, setEmbedIframe] = useState("");
+
   function convert_url() {
     linkValid = false;
     var url = document.getElementById("url").value;
@@ -14,13 +17,13 @@ const Home = () => {
         var hasilrgx = url.match(regx_yutub);
         if (hasilrgx) {
           url = hasilrgx[2];
-          linkValid = true
+          linkValid = true;
         }
         regx_yutub = /^(?:http|https):\/\/youtu\.be\/([a-zA-Z0-9]{1,15})/;
         hasilrgx = url.match(regx_yutub);
         if (hasilrgx) {
           url = hasilrgx[1];
-          linkValid = true
+          linkValid = true;
         }
         return url;
       }
@@ -40,10 +43,10 @@ const Home = () => {
       var mulaiEmbed = formatEmbed(idvideo);
       document.getElementById("hasil").value = mulaiEmbed;
       div.style.display = "block";
-    }
-    else {
+      setEmbedIframe(mulaiEmbed);
+    } else {
       alert("Incorrect URL address");
-      document.getElementById("hasil").value = '';
+      document.getElementById("hasil").value = "";
       div.style.display = "none";
     }
   }
@@ -119,6 +122,10 @@ const Home = () => {
               Submit
             </button>
           </div>
+          <div>
+            <div className="content">{Parser(embedIframe)}</div>
+          </div>
+
           <div
             className="mb-3 mt-3 p-2 container text-center"
             id="text-area"
