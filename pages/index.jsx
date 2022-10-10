@@ -15,7 +15,6 @@ const Home = () => {
         var regx_yutub =
           /^((?:http|https):\/\/(?:www|m)\.youtube\.com)\/watch\?v\=([a-zA-Z0-9]{1,15})/;
         var hasilrgx = url.match(regx_yutub);
-        console.log(hasilrgx);
         if (hasilrgx) {
           url = hasilrgx[2];
           linkValid = true;
