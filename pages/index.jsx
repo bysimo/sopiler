@@ -1,49 +1,64 @@
 import Head from "next/head";
 import { useState } from "react";
 import Parser from "html-react-parser";
-var linkValid;
+let isValidLink = false;
+let idVideoYoutube = null;
 
 const Home = () => {
   const [embedIframe, setEmbedIframe] = useState("");
 
-  function convert_url() {
-    linkValid = false;
-    var url = document.getElementById("url").value;
-    if (url != null) {
-      var regxwww = /^(?:http|https):\/\/[a-zA-Z0-9=+_./-]+[.]+/;
-      if (url.match(regxwww)) {
-        var regx_yutub =
-          /^((?:http|https):\/\/(?:www|m)\.youtube\.com)\/watch\?v\=([a-zA-Z0-9]{1,15})/;
-        var hasilrgx = url.match(regx_yutub);
-        if (hasilrgx) {
-          url = hasilrgx[2];
-          linkValid = true;
+  function checkYoutubeLink(link) {
+    const regexYoutubeUrl = /^(?:http|https):\/\/(?:www|m)\.youtube\.com\/watch\?v\=([a-zA-Z0-9_-]{1,15})/;
+    const isValidRegex = link.match(regexYoutubeUrl);
+    if (isValidRegex) {
+      idVideoYoutube = isValidRegex[1];
+      isValidLink = true;
+    }
+  }
+
+  function checkYoutubeShortlink(link) {
+    const regexYoutubeUrl = /^(?:http|https):\/\/youtu\.be\/([a-zA-Z0-9_-]{1,15})/;
+    const isValidRegex = link.match(regexYoutubeUrl);
+    if (isValidRegex) {
+      idVideoYoutube = isValidRegex[1];
+      isValidLink = true;
+    }
+  }
+
+  function getIdVideo() {
+    isValidLink = false;
+    idVideoYoutube = null;
+    let idVideo = document.getElementById("url").value;
+    if (idVideo != null) {
+      let regexFullUrl = /^(?:http|https):\/\/[a-zA-Z0-9=+_./-]+[.]+/;
+      if (idVideo.match(regexFullUrl)) {
+        checkYoutubeLink(idVideo);
+        if (isValidLink) {
+          return idVideoYoutube;
         }
-        regx_yutub = /^(?:http|https):\/\/youtu\.be\/([a-zA-Z0-9]{1,15})/;
-        hasilrgx = url.match(regx_yutub);
-        if (hasilrgx) {
-          url = hasilrgx[1];
-          linkValid = true;
+
+        checkYoutubeShortlink(idVideo);
+        if (isValidLink) {
+          return idVideoYoutube;
         }
-        return url;
+
+        return null;
       }
     }
   }
+  
   function formatEmbed(str) {
-    var embed =
-      '<iframe src="https://www.youtube.com/embed/' +
-      str +
-      '" style="width:100%; aspect-ratio:16/9;" title="Embedded Media"></iframe>';
-    return embed;
+    return `<iframe src="https://www.youtube.com/embed/${str}" style="width:100%; aspect-ratio:16/9;" title="Embedded Media"></iframe>`;
   }
+
   function embedVideo() {
-    var idvideo = convert_url();
+    let idVideo = getIdVideo();
     const div = document.getElementById("text-area");
-    if (linkValid) {
-      var mulaiEmbed = formatEmbed(idvideo);
-      document.getElementById("hasil").value = mulaiEmbed;
+    if (isValidLink) {
+      let startEmbed = formatEmbed(idVideo);
+      document.getElementById("hasil").value = startEmbed;
       div.style.display = "block";
-      setEmbedIframe(mulaiEmbed);
+      setEmbedIframe(startEmbed);
     } else {
       alert("Incorrect URL address");
       document.getElementById("hasil").value = "";
@@ -51,9 +66,9 @@ const Home = () => {
     }
   }
 
-  function myFunction() {
+  function copyLinkEmbed() {
     /* Get the text field */
-    var copyText = document.getElementById("hasil");
+    let copyText = document.getElementById("hasil");
 
     /* Select the text field */
     copyText.select();
@@ -122,22 +137,20 @@ const Home = () => {
               Submit
             </button>
           </div>
-          <div>
-            <div className="content">{Parser(embedIframe)}</div>
-          </div>
-
           <div
             className="mb-3 mt-3 p-2 container text-center"
             id="text-area"
             style={{ display: "none" }}
           >
+            <div className="content">{Parser(embedIframe)}</div>
+            <br/>
             <label htmlFor="code" className="form-label mb-3">
               Get your embed code below !
             </label>
             <textarea className="form-control shadow" id="hasil" rows="3" />
             <button
               className="btn btn-outline-dark mt-4 shadow"
-              onClick={() => myFunction()}
+              onClick={() => copyLinkEmbed()}
             >
               Copy text
             </button>
