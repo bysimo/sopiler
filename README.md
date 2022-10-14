@@ -22,6 +22,10 @@ then this website will automatically change your video link into html embedded Y
 
         yarn start
 
+## Run storybook
+
+`yarn storybook`
+
 ## Open this link for Demo
 
 [Demo](https://sopiler.netlify.app/)
