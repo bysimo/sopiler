@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { useState } from "react";
 import Parser from "html-react-parser";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 let isValidLink = false;
 let idVideoYoutube = null;
 
@@ -8,7 +10,8 @@ const Home = () => {
   const [embedIframe, setEmbedIframe] = useState("");
 
   function checkYoutubeLink(link) {
-    const regexYoutubeUrl = /^(?:http|https):\/\/(?:www|m)\.youtube\.com\/watch\?v\=([a-zA-Z0-9_-]{1,15})/;
+    const regexYoutubeUrl =
+      /^(?:http|https):\/\/(?:www|m)\.youtube\.com\/watch\?v\=([a-zA-Z0-9_-]{1,15})/;
     const isValidRegex = link.match(regexYoutubeUrl);
     if (isValidRegex) {
       idVideoYoutube = isValidRegex[1];
@@ -17,7 +20,8 @@ const Home = () => {
   }
 
   function checkYoutubeShortlink(link) {
-    const regexYoutubeUrl = /^(?:http|https):\/\/youtu\.be\/([a-zA-Z0-9_-]{1,15})/;
+    const regexYoutubeUrl =
+      /^(?:http|https):\/\/youtu\.be\/([a-zA-Z0-9_-]{1,15})/;
     const isValidRegex = link.match(regexYoutubeUrl);
     if (isValidRegex) {
       idVideoYoutube = isValidRegex[1];
@@ -46,7 +50,7 @@ const Home = () => {
       }
     }
   }
-  
+
   function formatEmbed(str) {
     return `<iframe src="https://www.youtube.com/embed/${str}" style="width:100%; aspect-ratio:16/9;" title="Embedded Media"></iframe>`;
   }
@@ -77,8 +81,13 @@ const Home = () => {
     /* Copy the text inside the text field */
     navigator.clipboard.writeText(copyText.value);
 
-    /* Alert the copied text */
-    alert("Copied the text: " + copyText.value);
+    /* Copy success alert */
+    toast.success("Copied the embedded text.", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      theme: "light",
+    });
   }
 
   function watchInputChanges() {
@@ -90,6 +99,7 @@ const Home = () => {
 
   return (
     <div>
+      <ToastContainer />
       <Head>
         <title>Sopiler</title>
         <meta
@@ -143,7 +153,7 @@ const Home = () => {
             style={{ display: "none" }}
           >
             <div className="content">{Parser(embedIframe)}</div>
-            <br/>
+            <br />
             <label htmlFor="code" className="form-label mb-3">
               Get your embed code below !
             </label>
